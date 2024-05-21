@@ -5,8 +5,10 @@ import {
   onMounted,
   onUnmounted,
   $navigateTo,
-} from 'nativescript-vue';
-import Details from './Details.vue';
+} from "nativescript-vue";
+import Details from "./Details.vue";
+import { SwiftUI } from "@nativescript/swift-ui";
+import { dir } from "console";
 
 const counter = ref(0);
 const message = computed(() => {
@@ -14,19 +16,23 @@ const message = computed(() => {
 });
 
 function logMessage() {
-  console.log('You have tapped the message!');
+  console.log("You have tapped the message!");
 }
 
 let interval: any;
 onMounted(() => {
-  console.log('mounted');
+  console.log("mounted");
   interval = setInterval(() => counter.value++, 100);
 });
 
 onUnmounted(() => {
-  console.log('unmounted');
+  console.log("unmounted");
   clearInterval(interval);
 });
+
+function onSwiftUIEvent(evt: any) {
+  console.log("SwiftUI event", evt.data);
+}
 </script>
 
 <template>
@@ -52,6 +58,17 @@ onUnmounted(() => {
         >
           View Details
         </Button>
+
+        <SwiftUI
+          row="3"
+          swiftId="demoSwiftUI"
+          :data="{ direction: 'right', maxValue: 100 }"
+          @swiftUIEvent="onSwiftUIEvent"
+        />
+
+        <!-- <VueSwiftUI>
+          <Test #whatever />
+        </VueSwiftUI> -->
       </GridLayout>
     </Page>
   </Frame>
